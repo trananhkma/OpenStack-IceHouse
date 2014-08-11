@@ -1,6 +1,12 @@
 OpenStack-IceHouse
 ==================
 #Hướng dẫn cài đặt OpenStack Icehouse
+Đầu tiên là mô hình mạng, chúng ta sẽ cài đặt và cấu hình theo mô hình này:
+![Mô hình mạng](https://github.com/trananhkma/image/blob/master/Screenshot_2.png)
+
+Tiếp theo là mô hình cài đặt. Các gói càu đặt trên mối node sẽ được thể hiện trên hình này:
+![Mô hình triển khai OpenStack](https://github.com/trananhkma/image/blob/master/Screenshot_1.png)
+
 Đăng nhập với quyền root để tiến hành cài đặt. Khi đăng nhập lần đầu cần đặt mật khẩu cho root:
 
 	sudo passwd root
