@@ -44,7 +44,7 @@ Ví dụ với Controller node:
 
 Làm tương tự với hai node còn lại. Thường thì sau khi đổi hostname phải restart máy mới có hiệu lực, nhưng với cách này bạn chỉ cần thoát terminal rồi vào lại là được.
 
-*Cấu hình host name (trên cả 3 node):*
+**Cấu hình host name (trên cả 3 node):**
 
 	vim /etc/hosts
 
@@ -61,7 +61,7 @@ Xóa 2 dòng có chữ "localhost" rồi thêm vào như sau:
 
 	vim /etc/network/interfaces
 
-*Controller node:*	
+**Controller node:**	
 	
 	10.10.10.81 (vm2 - eth0)
 	192.168.1.81 (vm0 - eth1)
@@ -80,7 +80,7 @@ Thêm nội dung sau vào file interface:
 	address 10.10.10.81
 	netmask 255.255.255.0
 
-*Compute node:*
+**Compute node:**
 	
 	10.10.10.82 (vm2 - eth0)
 	192.168.1.82 (vm0 - eth1)
@@ -105,7 +105,7 @@ Làm tương tự như Controller node:
 	address 10.10.20.82
 	netmask 255.255.255.0
 
-*Network node:*
+**Network node:**
 
 	10.10.10.83 (vm2 - eth0)
 	192.168.1.83 (vm0 - eth1)
@@ -130,25 +130,25 @@ Note cuối cùng:
 	address 10.10.20.83
 	netmask 255.255.255.0
 
-*Sau khi cấu hình xong cần restart mạng:*
+Sau khi cấu hình xong cần restart mạng:
 
 	/etc/init.d/networking restart
 
-**Để chắc chắc, bạn nên kiểm tra lại xem các cổng đã nhận đúng ip như cấu hình chưa? Kiểm tra với lệnh sau:**
+*Để chắc chắc, bạn nên kiểm tra lại xem các cổng đã nhận đúng ip như cấu hình chưa? Kiểm tra với lệnh sau:*
 
 	ip a
 	
-**Nếu các cổng vẫn chưa nhận đúng IP thì cần restart từng cổng:**
+*Nếu các cổng vẫn chưa nhận đúng IP thì cần restart từng cổng:*
 
 	ifdown eth0 eth1 eth2
 	ifup eth0 eth1 eth2
 
-**Nếu vẫn không được bạn phải kiểm tra lại file cấu hình xem đã làm theo đúng như hướng dẫn chưa? Sau đó có thể restart máy cho chắc:**
+*Nếu vẫn không được bạn phải kiểm tra lại file cấu hình xem đã làm theo đúng như hướng dẫn chưa? Sau đó có thể restart máy cho chắc:*
 
 	init 6
 
-***Note:*** **Trường hợp kiểm tra lại, làm đúng như trên mà các cổng vẫn không nhận đúng IP, thì bạn nên chuẩn bị 1 cái búa loại 10kg và 1 bó hương để cầu nguyện! Chúc may mắn! :)**
-Cuối cùng, ta kiểm tra kết nối mạng bằng cách *ping* từ một node đến hai node còn lại. Ví dụ đang ở Controller node thì ping đến Network node và Compute node:
+***Note:*** *Trường hợp kiểm tra lại, làm đúng như trên mà các cổng vẫn không nhận đúng IP, thì bạn nên chuẩn bị 1 cái búa loại 10kg và 1 bó hương để cầu nguyện! Chúc may mắn! :)*
+Cuối cùng, ta kiểm tra kết nối mạng bằng cách **ping** từ một node đến hai node còn lại. Ví dụ đang ở Controller node thì ping đến Network node và Compute node:
 	
 	ping compute
 	ping network
@@ -157,13 +157,13 @@ Khi mạng thông đồng nghĩa với bạn đã hoàn thành cấu hình mạn
 
 ##II. Cài đặt:
 ###1. Các gói cần thiết
-#####*NTP (cài trên cả 3 node):* 
+#####**NTP (cài trên cả 3 node):**
 Đây là dịch vụ giúp đồng bộ thời gian trên các máy chủ:
 
 	apt-get install ntp -y
 
-#####*Mysql:*
-*Controller node:*
+#####**Mysql:**
+**Controller node:**
 
 	apt-get install python-mysqldb mysql-server -y
 
@@ -192,14 +192,14 @@ Cấu hình bảo mật cho mysql: (chọn "y" cho mọi câu hỏi)
 	mysql_install_db
 	mysql_secure_installation
 
-*Compute node và Network node:*
+**Compute node và Network node:**
 
 	apt-get install python-mysqldb -y
 
-#####*OpenStack packages:*
+#####**OpenStack packages:**
 Do Ubuntu 14.04 đã tích hợp sẵn gói OpenStack Icehouse nên không cần cài gói này!
 
-#####*RabbitMQ:* 
+#####**RabbitMQ:**
 Gói dich vụ này giúp các máy chủ giao tiếp với nhau, chỉ cần cài đặt trên Controller node:
  
 	apt-get install rabbitmq-server -y
@@ -208,43 +208,43 @@ Gói dich vụ này giúp các máy chủ giao tiếp với nhau, chỉ cần c�
 
 	rabbitmqctl change_password guest 1
 
-***Note:*** **Sau khi cài xong phần này, bạn nên update và tạo snapshot:
+***Note:*** *Sau khi cài xong phần này, bạn nên update và tạo snapshot:*
 
 	apt-get update && apt-get dist-upgrade -y
 
 ###2. Các thành phần core
-####*KEYSTONE*
+####**KEYSTONE**
 Keystone là thành phần để chứng thực, token, catalog và policy service cho tất cả các dịch vụ khác của Openstack.
 Nó được triển khai thông qua Identity API của Openstack. Kiểm tra ng dùng và quyền của họ.
 Cung cấp 1 danh mục các dịch vụ sẵn có cùng với API của Endpoint.<br>
 Một số khái niệm cần biết trước khi tiến hành cài đặt:<br>
-- *User:* 
+- **User:** 
 Đại diện số hóa của một người, hệ thống, dịch vụ hoặc người sử dụng dịch vụ OpenStack.
 Identity service xác nhận rằng các yêu cầu đến được thực hiện bởi user những người mà có quyền được yêu cầu.
 User phải đăng nhập và có thể được gán token để truy cập tài nguyên.
-- *Credetials:*
+- **Credetials:**
 Dữ liệu chỉ được biết đến đại diện cho một người và dùng để chứng minh họ là ai.
 Trong  Identity Service có 3 loại xác thực: User name và password, user name and API key, hoặc authentication = token được cung cấp bởi Identity Service.
-- *Authentication:*
+- **Authentication:**
 Hành động xác nhận danh tính User.
 Identity service xác nhận một yêu cầu gửi đến bằng cách xác nhận một tập hợp các thông tin được cung cấp bởi user.
 Identity service cung cấp 1 mã xác thực mà user sử dụng trong yêu cầu tiếp theo của mình.
-- *Token:*
+- **Token:**
 Là 1 chuỗi kí tự dài bất kì. 
 Token có một phạm vi trong đó mô tả các tài nguyên nó có thể truy cập.
 Token có thể bị thu hồi bất cứ lúc nào và có giá trị trong một thời gian hữu hạn.
 Keystone cung cấp cho user 1 token trong token đó ngoài việc xác định user là ai còn xác định user có quyền gì.
-- *Service:*
+- **Service:**
 Cung cấp một hoặc nhiều Endpoint, thông qua đó người dùng có thể truy cập tài nguyên và thực hiện các hoạt động.
-- *Endpoint:*
+- **Endpoint:**
 Một địa chỉ mạng có thể truy cập, thường được mô tả bởi một URL, từ đó bạn truy cập vào một dịch vụ.
 Khi user sử dụng 1 endpoint để truy cập vào 1 dịch vụ nào đó, user dùng 1 token đưa cho endpoitn để nó xác nhận xem có được dùng endpoitn này ko và có những quyền gì.
 Endpoint này cầm token đi hỏi Keystone xem cái token này có phù hợp ko và có quyền gì.
 (Endpoitn giống như 1 cái cổng để user truy cập vào service ). 
 Khi token đã dc xác định phù hợp bởi Keystone thì sau đó user sẽ tiếp tục dc truy cập và sử dụng Service.
-- *Role:*
+- **Role:**
 Role bao gồm 1 tập hợp các quyền và đặc quyền hay vai trò của 1 đối tượng nào đó.
-- *Tenant:*
+- **Tenant:**
 Một ngăn chứa, khu vực dùng để nhóm hoặc cô lập tài nguyên.
 Tùy thuộc vào các nhà cung cấp dịch vụ mà các tenant này được map cho khách hàng hay 1 tài khoản.<br>
 Bắt đầu cài đặt trên Controller node:
@@ -359,7 +359,7 @@ Nếu không thì bạn phải xem lại từng bước cấu hình! (Hoặc bú
 	keystone user-list
 	keystone user-role-list --user admin --tenant admin
 	
-####*GLANCE*
+####**GLANCE**
 Đây là thành phần cài trên Controller node, giúp tạo và quản lý các file image, cần thiết cho việc tạo máy ảo.
 Các thành phần: <br>
 - Glance API server - nhận các hàm gọi API, tương tự như nova-api, nó chờ các API request sau đó giao tiếp với các thành phần khác (glance-registry và image store) sau đó thực hiện các công việc được yêu cầu: truy vấn, upload, delete image...
@@ -455,7 +455,7 @@ Nếu có rồi thì nghĩa là bạn đã cài đặt thành công, xóa bỏ t
 	rm -r /tmp/images
 
 Còn nếu không thì bạn biết phải làm gì rồi đấy! (Búa + hương)
-####*NOVA*
+####**NOVA**
 Đây là thành phần giúp quản lý tài nguyên ảo hóa bao gồm CPU, memory, disks, network interfaces.
 Tất cả các tài nguyên được hợp nhất vào trong 1 “bể” – “pool of computing”.
 Các thành phần bao gồm: <br>
@@ -467,7 +467,7 @@ Các thành phần bao gồm: <br>
 - Network Controller - tạo quản lý các kết nối trong virtual network để các server có thể tương tác với nhau và với public network.
 - Scheduler - chọn ra compute controller thích hợp nhất để lưu instance.
 
-#####*Trên Controller node:*
+#####**Trên Controller node:**
 
 	apt-get install nova-api nova-cert nova-conductor nova-consoleauth nova-novncproxy nova-scheduler python-novaclient -y
 
@@ -556,7 +556,7 @@ Cuối cùng là kiểm tra dịch vụ:
 Nếu hiện ra các service với các state có hình mặt cười nghĩa là đã cài đặt đúng.
 Nếu cài đặt sai, các state này sẽ có hình "XXXX".
 
-#####*Trên Compute node:*
+#####**Trên Compute node:**
 
 	apt-get install nova-compute-kvm python-guestfs -y
 
@@ -626,10 +626,10 @@ Nếu không quá trình kiểm tra lại sẽ rất khổ sở! Có thể cần
 
 Chúc may mắn! :-)
 
-####*NEUTRON*
+####**NEUTRON**
 Nó cho phép cung cấp kết nối mạng như một dịch vụ cho dịch vụ OpenStack khác như compute.
 Phần này cần cài đặt trên cả 3 node.
-#####*Trên Controller node:*
+#####**Trên Controller node:**
 Tạo database và cấp quyền cho user:
 
 	mysql -u root -p1
@@ -739,7 +739,7 @@ Reload các dịch vụ:
 	service nova-conductor restart
 	service neutron-server restart
 
-#####*Trên Network node:*
+#####**Trên Network node:**
 Trước khi cấu hình Network, cần phải enable chức năng kernel networking:
 
 	vim  /etc/sysctl.conf
@@ -825,7 +825,7 @@ Thêm nội dung sau:
 	verbose = True
 
 
-#####*Trên Controller node:*
+#####**Trở lại Controller node:**
 
 	vim /etc/nova/nova.conf
 
@@ -839,7 +839,7 @@ Reload:
 
 	service nova-api restart
 
-#####*Trên Network node:*
+#####**Tiếp tục trên Network node:**
 Sửa các file cấu hình:
 
 	vim /etc/neutron/plugins/ml2/ml2_conf.ini
@@ -974,7 +974,7 @@ Reload các dịch vụ:
 	service nova-compute restart
 	service neutron-plugin-openvswitch-agent restart
 
-####*HORIZON*
+####**HORIZON**
 Dashboard cung cấp một giao diện web nhằm tương tác quản lý các thành phần còn lại của Openstack( tạo máy ảo, đặt ip, điều khiển kết nối...), nó kết hợp với Keystone để chứng thực user.
 	
 	apt-get install apache2 memcached libapache2-mod-wsgi openstack-dashboard -y
