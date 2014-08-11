@@ -147,7 +147,7 @@ Sau khi cấu hình xong cần restart mạng:
 
 	init 6
 
-***Note:*** *Trường hợp kiểm tra lại, làm đúng như trên mà các cổng vẫn không nhận đúng IP, thì bạn nên chuẩn bị 1 cái búa loại 10kg và 1 bó hương để cầu nguyện! Chúc may mắn! :)*
+***Note:*** *Trường hợp kiểm tra lại, làm đúng như trên mà các cổng vẫn không nhận đúng IP, thì bạn nên chuẩn bị 1 cái búa loại 10kg và 1 bó hương để cầu nguyện! Chúc may mắn! :)* <br>
 Cuối cùng, ta kiểm tra kết nối mạng bằng cách **ping** từ một node đến hai node còn lại. Ví dụ đang ở Controller node thì ping đến Network node và Compute node:
 	
 	ping compute
@@ -163,7 +163,7 @@ Khi mạng thông đồng nghĩa với bạn đã hoàn thành cấu hình mạn
 	apt-get install ntp -y
 
 #####**Mysql:**
-**Controller node:**
+***Controller node:***
 
 	apt-get install python-mysqldb mysql-server -y
 
@@ -192,7 +192,7 @@ Cấu hình bảo mật cho mysql: (chọn "y" cho mọi câu hỏi)
 	mysql_install_db
 	mysql_secure_installation
 
-**Compute node và Network node:**
+***Compute node và Network node:***
 
 	apt-get install python-mysqldb -y
 
@@ -248,7 +248,7 @@ Role bao gồm 1 tập hợp các quyền và đặc quyền hay vai trò của 
 Một ngăn chứa, khu vực dùng để nhóm hoặc cô lập tài nguyên.
 Tùy thuộc vào các nhà cung cấp dịch vụ mà các tenant này được map cho khách hàng hay 1 tài khoản.<br>
 Bắt đầu cài đặt trên Controller node:
-
+	
 	apt-get install keystone -y
 
 Sau khi hoàn tất cài đặt, sửa file cấu hình:
@@ -320,10 +320,10 @@ Tạo service xác thực:
 Tạo endpoint:
 
 	keystone endpoint-create \
-  --service-id=$(keystone service-list | awk '/ identity / {print $2}') \
-  --publicurl=http://controller:5000/v2.0 \
-  --internalurl=http://controller:5000/v2.0 \
-  --adminurl=http://controller:35357/v2.0
+  	--service-id=$(keystone service-list | awk '/ identity / {print $2}') \
+  	--publicurl=http://controller:5000/v2.0 \
+  	--internalurl=http://controller:5000/v2.0 \
+	--adminurl=http://controller:35357/v2.0
 
 Kiểm tra dịch vu:
 Sau khi có được endpoint, ta hủy "thẻ tạm thời" đã tạo lúc đầu để vào tạo "thẻ chính thức":
@@ -444,7 +444,7 @@ Tải một file img có sẵn về:
 Đổi định dạng và thiết lập cho file đó:
 
  	glance image-create --name "cirros-0.3.2-x86_64" --disk-format qcow2 \
-  --container-format bare --is-public True --progress < cirros-0.3.2-x86_64-disk.img
+  	--container-format bare --is-public True --progress < cirros-0.3.2-x86_64-disk.img
 
 Kiểm tra xem đã có chưa:
 
@@ -533,12 +533,13 @@ Sửa nội dung như sau:
 Sau đó tạo service và endpoint:
 
 	keystone service-create --name=nova --type=compute \
-  --description="OpenStack Compute"
+  	--description="OpenStack Compute"
+  	
 	keystone endpoint-create \
-  --service-id=$(keystone service-list | awk '/ compute / {print $2}') \
-  --publicurl=http://controller:8774/v2/%\(tenant_id\)s \
-  --internalurl=http://controller:8774/v2/%\(tenant_id\)s \
-  --adminurl=http://controller:8774/v2/%\(tenant_id\)s
+  	--service-id=$(keystone service-list | awk '/ compute / {print $2}') \
+  	--publicurl=http://controller:8774/v2/%\(tenant_id\)s \
+  	--internalurl=http://controller:8774/v2/%\(tenant_id\)s \
+  	--adminurl=http://controller:8774/v2/%\(tenant_id\)s
 
 Sau khi hoàn tất quá trình cấu hình, cần reload các dịch vụ để có thể chạy được:
 
@@ -645,10 +646,10 @@ Tạo user, add role, service, endpoint:
 	keystone user-role-add --user neutron --tenant service --role admin
 	keystone service-create --name neutron --type network --description "OpenStack Networking"
 	keystone endpoint-create \
-  --service-id $(keystone service-list | awk '/ network / {print $2}') \
-  --publicurl http://controller:9696 \
-  --adminurl http://controller:9696 \
-  --internalurl http://controller:9696
+  	--service-id $(keystone service-list | awk '/ network / {print $2}') \
+  	--publicurl http://controller:9696 \
+  	--adminurl http://controller:9696 \
+  	--internalurl http://controller:9696
 
 Cài đặt các gói cần thiết:
 
