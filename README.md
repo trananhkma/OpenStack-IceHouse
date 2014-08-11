@@ -213,7 +213,7 @@ Gói dich vụ này giúp các máy chủ giao tiếp với nhau, chỉ cần c�
 	apt-get update && apt-get dist-upgrade -y
 
 ###2. Các thành phần core
-####**KEYSTONE**
+####**2.1 KEYSTONE**
 Keystone là thành phần để chứng thực, token, catalog và policy service cho tất cả các dịch vụ khác của Openstack.
 Nó được triển khai thông qua Identity API của Openstack. Kiểm tra ng dùng và quyền của họ.
 Cung cấp 1 danh mục các dịch vụ sẵn có cùng với API của Endpoint.<br>
@@ -359,7 +359,7 @@ Nếu không thì bạn phải xem lại từng bước cấu hình! (Hoặc bú
 	keystone user-list
 	keystone user-role-list --user admin --tenant admin
 	
-####**GLANCE**
+####**2.2 GLANCE**
 Đây là thành phần cài trên Controller node, giúp tạo và quản lý các file image, cần thiết cho việc tạo máy ảo.
 Các thành phần: <br>
 - Glance API server - nhận các hàm gọi API, tương tự như nova-api, nó chờ các API request sau đó giao tiếp với các thành phần khác (glance-registry và image store) sau đó thực hiện các công việc được yêu cầu: truy vấn, upload, delete image...
@@ -455,7 +455,7 @@ Nếu có rồi thì nghĩa là bạn đã cài đặt thành công, xóa bỏ t
 	rm -r /tmp/images
 
 Còn nếu không thì bạn biết phải làm gì rồi đấy! (Búa + hương)
-####**NOVA**
+####**2.3 NOVA**
 Đây là thành phần giúp quản lý tài nguyên ảo hóa bao gồm CPU, memory, disks, network interfaces.
 Tất cả các tài nguyên được hợp nhất vào trong 1 “bể” – “pool of computing”.
 Các thành phần bao gồm: <br>
@@ -627,7 +627,7 @@ Nếu không quá trình kiểm tra lại sẽ rất khổ sở! Có thể cần
 
 Chúc may mắn! :-)
 
-####**NEUTRON**
+####**2.4 NEUTRON**
 Nó cho phép cung cấp kết nối mạng như một dịch vụ cho dịch vụ OpenStack khác như compute.
 Phần này cần cài đặt trên cả 3 node.
 #####**Trên Controller node:**
@@ -975,7 +975,7 @@ Reload các dịch vụ:
 	service nova-compute restart
 	service neutron-plugin-openvswitch-agent restart
 
-####**HORIZON**
+####**2.5 HORIZON**
 Dashboard cung cấp một giao diện web nhằm tương tác quản lý các thành phần còn lại của Openstack( tạo máy ảo, đặt ip, điều khiển kết nối...), nó kết hợp với Keystone để chứng thực user.
 	
 	apt-get install apache2 memcached libapache2-mod-wsgi openstack-dashboard -y
