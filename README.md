@@ -75,7 +75,7 @@ Xóa 2 dòng có chữ "localhost" rồi thêm vào như sau:
 Thêm nội dung sau vào file interface:
 
 	auto eth1
-	face eth1 inet static
+	iface eth1 inet static
 	address 192.168.1.81
 	netmask 255.255.255.0
 	gateway 192.168.1.1
